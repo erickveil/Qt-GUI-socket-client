@@ -52,22 +52,22 @@ void EchoClient::run()
 
         QString line(mWin->textbox_contents);
 
-        //if (socket.state() == QAbstractSocket::ConnectedState){
+        if (socket.state() == QAbstractSocket::ConnectedState){
 
             writeLine(&socket, line);
+
+            // Response expectation removed for this example
+            /*
             QString echoedLine = readLine( &socket );
 
-            //if (echoedLine.length() > 0) {
-
-                if (line != echoedLine) {
-                    printf("line and echoed line doesn't match\n");
-                }
-                else {
-                    printf("%s\n", line.toLocal8Bit().data() );
-                }
-
-            //}
-        //}
+            if (line != echoedLine) {
+                printf("line and echoed line doesn't match\n");
+            }
+            else {
+                printf("%s\n", line.toLocal8Bit().data() );
+            }
+            */
+        }
     }
     else {
         printf("Client socket failed to connect\n");
