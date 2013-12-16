@@ -41,22 +41,23 @@ void EchoClient::run()
         }
 
         printf("\n");
-        int ix = 0;
 
         /*
          *Here, we must define the line, not as pulled from our constants, but from our main
          *window's text box. we must therefore get a reference to the main window to this point
+         *However, the thread "run" method is called from the engine by start.
+         *So there is no way to pass a reference directly to this method.
+         *The class must hold the reference as a member.
          */
 
-        while (
-               (socket.state() == QAbstractSocket::ConnectedState) &&
-               (ix < mNumStrings)
-               ) {
-            QString line( mStrings[ix] );
+        QString line(mWin->textbox_contents);
+
+        //if (socket.state() == QAbstractSocket::ConnectedState){
+
             writeLine(&socket, line);
             QString echoedLine = readLine( &socket );
 
-            if (echoedLine.length() > 0) {
+            //if (echoedLine.length() > 0) {
 
                 if (line != echoedLine) {
                     printf("line and echoed line doesn't match\n");
@@ -65,9 +66,8 @@ void EchoClient::run()
                     printf("%s\n", line.toLocal8Bit().data() );
                 }
 
-            }
-            ix++;
-        }
+            //}
+        //}
     }
     else {
         printf("Client socket failed to connect\n");

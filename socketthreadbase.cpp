@@ -44,6 +44,8 @@ QString SocketThreadBase::readLine(QTcpSocket *socket )
         bool endOfLine = false;
         bool endOfStream = false;
 
+        // Possibly should insert a timeout in here
+
         while (cnt < bytesAvail && (!endOfLine) && (!endOfStream)) {
             char ch;
             int bytesRead = socket->read(&ch, sizeof(ch));

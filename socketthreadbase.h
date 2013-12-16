@@ -33,6 +33,7 @@ public:
     virtual void startThread() = 0;
     virtual void stopThread() = 0;
     virtual Identity getIdentity() = 0;
+
 protected:
     QMutex mMutex;
     const QString mIP;
@@ -44,6 +45,7 @@ protected:
     QString readLine(QTcpSocket *socket );
     int waitForInput( QTcpSocket *socket );
     void writeLine( QTcpSocket *client, const QString &line );
+
 private:
     bool mRunThread;
 };

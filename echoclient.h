@@ -8,11 +8,15 @@
 #include "QVector"
 #include "QString"
 #include "socketthreadbase.h"
+#include "mainwindow.h"
 
 class EchoClient : public SocketThreadBase, QThread
 {
 public:
-    EchoClient(const QString &ipAddr, const ushort port ) : SocketThreadBase( ipAddr, port ) { mDone = false; }
+    EchoClient(const QString &ipAddr, const ushort port, MainWindow* win ) : SocketThreadBase( ipAddr, port ) {
+        mDone = false;
+        mWin = win;
+    }
     void startThread();
     void stopThread();
     bool isDone();
@@ -27,6 +31,7 @@ private:
     static const char *mStrings[];
     static const uint mNumStrings;
     bool mDone;
+    MainWindow* mWin;
 };
 
 

@@ -10,20 +10,22 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    // ***
-    const QString IP =     "127.0.0.3";
-    const ushort port = 9999;
+
+    // Moving this off to a slot
+
+    //const QString IP =     "127.0.0.3";
+    //const ushort port = 9999;
 
     //EchoServer server(IP, port );
-    EchoClient client(IP, port );
+    //EchoClient client(IP, port );
 
     //server.startThread();
-    client.startThread();
+    //client.startThread();
 
-    while (! client.isDone()) {
-        usleep( 100000 );
-    }
-    // ***
+    //while (! client.isDone()) {
+    //    usleep( 100000 );
+    //}
+
 
 
     return a.exec();
