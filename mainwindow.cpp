@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_bu_send_clicked()
 {
     // place the data from the textbox into a public place so it can be used
-    this->textbox_contents=this->ui->tb_msg->text();
+    QString textbox_contents=this->ui->tb_msg->text();
 
     // fire off the client, which will depend on that data being accessible
     bool ok;
@@ -34,7 +34,7 @@ void MainWindow::on_bu_send_clicked()
         return;
     }
 
-    EchoClient client(IP, port, this );
+    EchoClient client(IP, port, textbox_contents );
     client.startThread();
 
     while (! client.isDone()) {

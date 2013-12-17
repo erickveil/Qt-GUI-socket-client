@@ -14,7 +14,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QString textbox_contents;
 
 private slots:
     void on_bu_send_clicked();

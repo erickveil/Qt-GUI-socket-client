@@ -13,9 +13,9 @@
 class EchoClient : public SocketThreadBase, QThread
 {
 public:
-    EchoClient(const QString &ipAddr, const ushort port, const MainWindow* win ) : SocketThreadBase( ipAddr, port ) {
+    EchoClient(const QString &ipAddr, const ushort port,  QString input ) : SocketThreadBase( ipAddr, port ) {
         mDone = false;
-        mWin = win;
+        send_data=input;
     }
     void startThread();
     void stopThread();
@@ -29,7 +29,7 @@ protected:
 private:
     static const unsigned int CONNECT_TIME_OUT = 5 * 1000; // 5 seconds
     bool mDone;
-    const MainWindow* mWin;
+    QString send_data;
 };
 
 

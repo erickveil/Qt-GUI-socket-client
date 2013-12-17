@@ -36,7 +36,7 @@ void EchoClient::run()
          *The class must hold the reference as a member.
          */
 
-        QString line(mWin->textbox_contents);
+        QString line(send_data);
 
         if (socket.state() == QAbstractSocket::ConnectedState){
 
