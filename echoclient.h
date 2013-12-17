@@ -13,7 +13,7 @@
 class EchoClient : public SocketThreadBase, QThread
 {
 public:
-    EchoClient(const QString &ipAddr, const ushort port, MainWindow* win ) : SocketThreadBase( ipAddr, port ) {
+    EchoClient(const QString &ipAddr, const ushort port, const MainWindow* win ) : SocketThreadBase( ipAddr, port ) {
         mDone = false;
         mWin = win;
     }
@@ -29,7 +29,7 @@ protected:
 private:
     static const unsigned int CONNECT_TIME_OUT = 5 * 1000; // 5 seconds
     bool mDone;
-    MainWindow* mWin;
+    const MainWindow* mWin;
 };
 
 
