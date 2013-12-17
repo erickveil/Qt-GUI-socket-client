@@ -15,9 +15,14 @@
 #include <QTcpServer>
 #include <QAbstractSocket>
 
-
-
-
+/**
+ * @brief The SocketThreadBase class
+ *
+ * Base for both listener and client of QTcpSocket classes.
+ * Holds the common IP and port data.
+ * Handles the mutex and locking for thread state.
+ * Common read and write functions, thread safe.
+ */
 class SocketThreadBase {
 
 public:

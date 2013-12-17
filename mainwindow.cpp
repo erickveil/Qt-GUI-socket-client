@@ -18,10 +18,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_bu_send_clicked()
 {
-    // place the data from the textbox into a public place so it can be used
     QString textbox_contents=this->ui->tb_msg->text();
 
-    // fire off the client, which will depend on that data being accessible
     bool ok;
     const QString IP = this->ui->tb_ip->text();
     const ushort port = this->ui->tb_port->text().toUShort(&ok);
