@@ -32,10 +32,7 @@ void MainWindow::on_bu_send_clicked()
         return;
     }
 
-    EchoClient client(IP, port, textbox_contents );
-    client.startThread();
+    managed_client = new EchoClient(IP,port,textbox_contents);
+    managed_client->startThread();
 
-    while (! client.isDone()) {
-        usleep( 100000 );
-    }
 }

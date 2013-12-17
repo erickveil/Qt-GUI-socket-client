@@ -8,7 +8,6 @@
 #include "QVector"
 #include "QString"
 #include "socketthreadbase.h"
-#include "mainwindow.h"
 
 /**
  * @brief The EchoClient class
