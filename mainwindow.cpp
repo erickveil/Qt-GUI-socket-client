@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "echoclient.h"
 #include "unistd.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,8 +22,17 @@ void MainWindow::on_bu_send_clicked()
     this->textbox_contents=this->ui->tb_msg->text();
 
     // fire off the client, which will depend on that data being accessible
-    const QString IP = "127.0.0.3";
-    const ushort port = 9999;
+    bool ok;
+    const QString IP = this->ui->tb_ip->text();
+    const ushort port = this->ui->tb_port->text().toUShort(&ok);
+
+    if (!ok)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("The port is not valid.");
+        msgBox.exec();
+        return;
+    }
 
     EchoClient client(IP, port, this );
     client.startThread();
