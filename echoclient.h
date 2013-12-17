@@ -28,8 +28,6 @@ protected:
 
 private:
     static const unsigned int CONNECT_TIME_OUT = 5 * 1000; // 5 seconds
-    static const char *mStrings[];
-    static const uint mNumStrings;
     bool mDone;
     MainWindow* mWin;
 };
