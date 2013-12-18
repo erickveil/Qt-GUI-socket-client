@@ -7,6 +7,9 @@ void EchoServer::echoServer(QTcpSocket *client )
     QString line;
     do {
         line = readLine( client );
+        printf("line:%s",line.toStdString().c_str());
+        //emit receivedLine();
+
 
         if (line.length() > 0) {
             writeLine( client, line );
@@ -19,13 +22,14 @@ void EchoServer::echoServer(QTcpSocket *client )
 /**
   Note that Qt requires that the QTcpServer be in the same thread it is used in.
   So it cannot be declared as a class variable.  It must be in the run thread.
+
+  Removed the ip reference and replaces with any QHostAddress connection.
 */
 void EchoServer::run()
 {
-    QHostAddress serverAddr( mIP );
     QTcpServer server;
 
-    if (server.listen(serverAddr, mPort)) {
+    if (server.listen(QHostAddress::Any, mPort)) {
         printf("EchoServer::run: listen() succeeded\n");
         while (server.isListening() && getRunThread()) {
 
@@ -41,7 +45,8 @@ void EchoServer::run()
         }
     }
     else {
-        printf("EchoServer::run: listen operation failed\n");
+        printf("EchoServer::run: listen operation failed\nport:%d\n",mPort);
+
     }
 }
 
@@ -55,3 +60,4 @@ void EchoServer::stopThread()
 {
     setRunThread( false );
 }
+

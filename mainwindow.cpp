@@ -34,5 +34,4 @@ void MainWindow::on_bu_send_clicked()
 
     managed_client = new EchoClient(IP,port,textbox_contents);
     managed_client->startThread();
-
 }
