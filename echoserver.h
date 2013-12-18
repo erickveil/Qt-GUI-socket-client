@@ -9,9 +9,9 @@
 #include "QString"
 #include "socketthreadbase.h"
 
-class EchoServer : public SocketThreadBase, QThread
+class EchoServer : public QThread, SocketThreadBase
 {
-   // Q_OBJECT
+    Q_OBJECT
 public:
     EchoServer(const QString &ipAddr, const ushort port ) : SocketThreadBase( ipAddr, port )
     {    }
@@ -24,8 +24,8 @@ protected:
     void run();
     void echoServer( QTcpSocket *client );
 
-//signals:
-//    void receivedLine();
+signals:
+    void receivedLine(QString line);
 };
 
 #endif // ECHOSERVER_H

@@ -1,21 +1,20 @@
 #include "echoserver.h"
 #include "unistd.h"
 
-
+/**
+ * @brief EchoServer::echoServer
+ * @param client
+ * Removed the loop, do not see a reason for it.
+ */
 void EchoServer::echoServer(QTcpSocket *client )
 {
     QString line;
-    do {
         line = readLine( client );
-        printf("line:%s",line.toStdString().c_str());
-        //emit receivedLine();
-
+        emit receivedLine(line);
 
         if (line.length() > 0) {
             writeLine( client, line );
         }
-
-    } while (line.length() > 0);
 }
 
 
