@@ -1,7 +1,10 @@
 #include "echoclient.h"
 
 
-
+/**
+ * @brief EchoClient::runClient
+ *Sends the message and receives a response, which it emits in a signal.
+ */
 void EchoClient::runClient()
 {
     QTcpSocket socket;
@@ -27,6 +30,12 @@ void EchoClient::runClient()
     }
 }
 
+/**
+ * @brief EchoClient::writeLine
+ * @param socket
+ * @param line
+ *Writes the line to the socket with error reporting.
+ */
 void EchoClient::writeLine(QTcpSocket *socket, const QString &line)
 {
     if (line.length() > 0) {
@@ -38,6 +47,12 @@ void EchoClient::writeLine(QTcpSocket *socket, const QString &line)
     }
 }
 
+/**
+ * @brief EchoClient::readLine
+ * @param socket
+ * @return
+ *Retrieves the ack from the socket
+ */
 QString EchoClient::readLine(QTcpSocket *socket )
 {
     QString line = "";
@@ -67,14 +82,27 @@ QString EchoClient::readLine(QTcpSocket *socket )
     return line;
 }
 
+/**
+ * @brief EchoClient::waitForInput
+ * @param socket
+ * @return
+ * Blocks from the moment of connection until something comes back.
+ *Or time out. There's that.
+ */
 int EchoClient::waitForInput( QTcpSocket *socket )
 {
     int bytesAvail = -1;
 
-    if (socket->waitForReadyRead( 100 )) {
+    if (socket->waitForReadyRead( 50000 )) {
         bytesAvail = socket->bytesAvailable();
     }
 
     return bytesAvail;
+}
+
+
+void EchoClient::startClientThread()
+{
+    runClient();
 }
 

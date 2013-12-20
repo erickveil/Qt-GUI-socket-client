@@ -20,7 +20,6 @@ public:
         send_data=input;
         this->port=port;
         this->ip=ipAddr;
-        runClient();
     }
 
 signals:
@@ -37,6 +36,9 @@ private:
     QString send_data;
     QString ip;
     ushort port;
+
+public slots:
+    void startClientThread();
 };
 
 
