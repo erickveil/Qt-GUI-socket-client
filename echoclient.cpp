@@ -2,74 +2,79 @@
 
 
 
-void EchoClient::setDone(const bool newVal)
-{
-    QMutexLocker lock( &mMutex );
-    mDone = newVal;
-}
-
-bool EchoClient::isDone()
-{
-    QMutexLocker lock( &mMutex );
-    return mDone;
-}
-
-/**
-    Note that the QTcpSocket object must be in the run thread.  It cannot
-    be a class variable.
-*/
-void EchoClient::run()
+void EchoClient::runClient()
 {
     QTcpSocket socket;
-    QHostAddress hostAddr( mIP );
-    socket.connectToHost( hostAddr, mPort );
+    QHostAddress hostAddr( ip );
+    socket.connectToHost( hostAddr, port );
 
     if (socket.waitForConnected( CONNECT_TIME_OUT )) {
 
-        printf("Client connected\n");
-
-        /*
-         *Here, we must define the line, not as pulled from our constants, but from our main
-         *window's text box. we must therefore get a reference to the main window to this point
-         *However, the thread "run" method is called from the engine by start.
-         *So there is no way to pass a reference directly to this method.
-         *The class must hold the reference as a member.
-         */
+        printf("%s: Client connected\n", __PRETTY_FUNCTION__);
 
         QString line(send_data);
 
         if (socket.state() == QAbstractSocket::ConnectedState){
 
             writeLine(&socket, line);
-
-            // Response expectation removed for this example
-            /*
             QString echoedLine = readLine( &socket );
-
-            if (line != echoedLine) {
-                printf("line and echoed line doesn't match\n");
-            }
-            else {
-                printf("%s\n", line.toLocal8Bit().data() );
-            }
-            */
+            printf("%s: sent line:%s\n", __PRETTY_FUNCTION__, line.toLocal8Bit().data() );
+            emit socketResponse(echoedLine);
         }
     }
     else {
-        printf("Client socket failed to connect\n");
+        printf("%s: Client socket failed to connect\n", __PRETTY_FUNCTION__);
+    }
+}
+
+void EchoClient::writeLine(QTcpSocket *socket, const QString &line)
+{
+    if (line.length() > 0) {
+        socket->write( line.toLocal8Bit() );
+
+        if (! socket->waitForBytesWritten()) {
+            printf("%s: writeLine: the write to the socket failed\n", __PRETTY_FUNCTION__);
+        }
+    }
+}
+
+QString EchoClient::readLine(QTcpSocket *socket )
+{
+    QString line = "";
+    int bytesAvail = waitForInput( socket );
+
+    if (bytesAvail > 0) {
+        int cnt = 0;
+        bool endOfLine = false;
+        bool endOfStream = false;
+
+        while (cnt < bytesAvail && (!endOfLine) && (!endOfStream)) {
+            char ch;
+            int bytesRead = socket->read(&ch, sizeof(ch));
+
+            if (bytesRead == sizeof(ch)) {
+                cnt++;
+                line.append( ch );
+                if (ch == '\r') {
+                    endOfLine = true;
+                }
+            }
+            else {
+                endOfStream = true;
+            }
+        }
+    }
+    return line;
+}
+
+int EchoClient::waitForInput( QTcpSocket *socket )
+{
+    int bytesAvail = -1;
+
+    if (socket->waitForReadyRead( 100 )) {
+        bytesAvail = socket->bytesAvailable();
     }
 
-    setDone( true );
-}
-
-
-void EchoClient::startThread()
-{
-    setRunThread( true );
-    start();
-}
-
-void EchoClient::stopThread()
-{
+    return bytesAvail;
 }
 

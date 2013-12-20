@@ -7,45 +7,36 @@
 #include "QTcpSocket"
 #include "QVector"
 #include "QString"
-#include "socketthreadbase.h"
 
 /**
  * @brief The EchoClient class
- *
- * You will notice the unfortunate case of multiple inheritance here.
- * The reason is that both client and listener make use of
- * 1. The Qt Thread library
- * 2. The common components of the custom base class
- * I made an attempt to create an inheritance chain of
- * QThread->SocketThreadBase->EchoClient
- * And the result was the mutex locks freezing the application.
- *
- * Attempt to localize the base thread functionality in either the client or server class
- * results in duplicate code.
- *
- * It appears, that multiple inheritance is unavoidable in this scenario.
- * Thanks, C++.
  */
-class EchoClient : public SocketThreadBase, QThread
+class EchoClient : public QObject
 {
+    Q_OBJECT
+
 public:
-    EchoClient(const QString &ipAddr, const ushort port,  QString input ) : SocketThreadBase( ipAddr, port ) {
-        mDone = false;
+    EchoClient(const QString &ipAddr, const ushort port,  QString input ){
         send_data=input;
+        this->port=port;
+        this->ip=ipAddr;
+        runClient();
     }
-    void startThread();
-    void stopThread();
-    bool isDone();
-    Identity getIdentity() { return CLIENT; }
+
+signals:
+    void socketResponse(QString resp);
 
 protected:
-    void run();
-    void setDone( const bool newVal );
+    void runClient();
+    QString readLine(QTcpSocket *socket );
+    void writeLine( QTcpSocket *client, const QString &line );
+    int waitForInput( QTcpSocket *socket );
 
 private:
     static const unsigned int CONNECT_TIME_OUT = 5 * 1000; // 5 seconds
-    bool mDone;
     QString send_data;
+    QString ip;
+    ushort port;
 };
 
 

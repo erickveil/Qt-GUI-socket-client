@@ -15,11 +15,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    socketthreadbase.cpp \
     echoclient.cpp
 
 HEADERS  += mainwindow.h \
-    socketthreadbase.h \
     echoclient.h
 
 FORMS    += mainwindow.ui

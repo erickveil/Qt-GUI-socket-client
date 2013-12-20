@@ -32,6 +32,9 @@ void MainWindow::on_bu_send_clicked()
         return;
     }
 
+    printf("%s: starting client\n", __PRETTY_FUNCTION__);
     managed_client = new EchoClient(IP,port,textbox_contents);
-    managed_client->startThread();
+    client_thread=new  QThread();
+    managed_client->moveToThread(client_thread);
+    client_thread->start();
 }

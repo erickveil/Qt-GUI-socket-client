@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "echoserver.h"
 #include "echoclient.h"
 #include "unistd.h"
 

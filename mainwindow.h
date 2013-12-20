@@ -16,6 +16,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     EchoClient *managed_client;
+    QThread *client_thread;
 
 private slots:
     void on_bu_send_clicked();
